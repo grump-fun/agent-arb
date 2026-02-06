@@ -1,0 +1,17 @@
+# Render.com blueprint — deploy Agent Arena app
+# Connect repo, then Render will use this. Or create Web Service manually: root dir = app, build = npm install, start = npm start.
+
+services:
+  - type: web
+    name: agent-arena
+    runtime: node
+    rootDir: app
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        generateValue: true
+      - key: SOLANA_RPC_URL
+        value: https://api.devnet.solana.com
+      - key: NODE_ENV
+        value: production

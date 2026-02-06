@@ -31,9 +31,16 @@ agent-arb/
 ## Run locally
 
 - **App (observe arena):** `cd app && npm install && npm start` → http://localhost:3000
-- **Agent (fetch state, decide move):** `cd agent && npm install && node run.js`
+- **Agent (fetch state, decide move, sign & submit):** `cd agent && npm install && node run.js`  
+  Requires `.agent-keypair.json` (arena authority keypair) at repo root or `AGENT_KEYPAIR_PATH`. Get devnet SOL via [AgentWallet faucet](https://agentwallet.mcpay.tech/skill.md).
 - **Heartbeat (Colosseum sync):** `cd agent && node heartbeat.js`
 - **Status:** `cd agent && node status.js`
+- **Tests:** `node agent/instructions.test.js`; `node tests/api-arena.test.js` (with app running)
+
+## Deploy app
+
+- **Render:** Connect this repo at [render.com](https://render.com), add Web Service, set root directory to `app`, build `npm install`, start `npm start`. Or use `render.yaml` (root dir = app).
+- **Else:** Any Node host; set `PORT`, `SOLANA_RPC_URL`, `AGENT_ARENA_PROGRAM_ID`.
 
 ## Build program (requires Solana + Anchor CLI)
 

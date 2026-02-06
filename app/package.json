@@ -1,0 +1,14 @@
+{
+  "name": "agent-arena-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.95.0",
+    "express": "^4.21.0"
+  }
+}

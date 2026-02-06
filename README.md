@@ -14,38 +14,37 @@
 | **Agent signs** | Off-chain process holds agent keypair; builds and signs `submit_move` tx; submits via RPC. |
 | **Why Solana** | PDAs for agent identity, low fees for many moves/stakes, fast finality, program as referee. |
 
-## Repo structure (to be added)
+## Repo structure
 
 ```
 agent-arb/
-├── DESIGN.md          # This hackathon design
+├── DESIGN.md              # Hackathon design
 ├── README.md
-├── program/           # Anchor program (arena + move + stake)
-├── agent/             # Off-chain bot: fetch state → decide move → sign & submit
-├── app/               # Frontend: vote, stake, watch
-└── tests/             # Program + integration tests
+├── Anchor.toml
+├── programs/agent_arena/  # Anchor program (arena, submit_move, stake)
+├── agent/                 # Off-chain agent: run.js, heartbeat.js, status.js
+├── app/                   # Express API + minimal HTML (GET /api/arena, GET /)
+├── scripts/               # create-colosseum-project.ps1
+└── .colosseum-api-key     # (gitignored) Colosseum API key
 ```
 
-## Colosseum project (draft)
+## Run locally
 
-The Colosseum API requires a **public GitHub repo** that already exists. One-time setup:
+- **App (observe arena):** `cd app && npm install && npm start` → http://localhost:3000
+- **Agent (fetch state, decide move):** `cd agent && npm install && node run.js`
+- **Heartbeat (Colosseum sync):** `cd agent && node heartbeat.js`
+- **Status:** `cd agent && node status.js`
 
-1. Create a new public repo on GitHub (e.g. `agent-arb`).
-2. Add it as `origin` and push this code:
-   ```bash
-   git remote add origin https://github.com/grump-fun/agent-arb.git
-   git add . && git commit -m "Initial: Agent Arena design and Colosseum registration"
-   git push -u origin master
-   ```
-3. Create the draft project (run from repo root):
-   ```powershell
-   .\scripts\create-colosseum-project.ps1 -RepoUrl "https://github.com/grump-fun/agent-arb"
-   ```
-   Then update or submit via the API when ready.
+## Build program (requires Solana + Anchor CLI)
 
-## 72h build order
+```bash
+# Install: https://solana.com/docs/cli
+anchor build
+# Deploy to devnet, then init_arena(agent_pubkey)
+```
 
-1. Anchor program: init arena, submit_move (agent-only), stake.
-2. PDAs and one full round flow on devnet.
-3. Agent script with keypair and submit_move.
-4. Minimal frontend: connect wallet, display state, vote (and optional stake).
+## Colosseum
+
+- **Project:** [agent-arena-6c298k](https://colosseum.com/agent-hackathon/projects/agent-arena-6c298k) (draft).
+- **Repo:** https://github.com/grump-fun/agent-arb  
+- Push code, then when ready: `POST /my-project/submit` (locks project).

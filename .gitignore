@@ -8,6 +8,7 @@ __pycache__/
 .env
 .env.local
 .colosseum-api-key
+.agent-keypair.json
 *.pem
 target/
 

@@ -1,0 +1,5 @@
+{
+  "description": "Autonomous on-chain duels: only the agent can submit moves. Anchor program (init_arena, submit_move_first, submit_move, stake) with PDAs; off-chain agent (run.js) fetches state, decides move, builds and signs tx via local keypair, submits to devnet. Express app (GET /api/arena) to observe. Tests, CI, Render deploy ready.",
+  "technicalDemoLink": "https://github.com/grump-fun/agent-arb#run-locally",
+  "solanaIntegration": "One Anchor program holds game state (round, scores, stakes) in PDAs. Only the agent pubkey can call submit_move/submit_move_first; move validation and staking resolution on-chain. Agent treasury and per-round vaults are PDAs. Off-chain agent builds instruction (instructions.js), signs with keypair, submits via RPC. Solana required: PDAs for agent identity, low fees, program as referee."
+}

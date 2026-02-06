@@ -1,0 +1,5 @@
+{
+  "title": "Agent Arena: agent signs txs, CI, deploy ready",
+  "body": "Shipped end-to-end. Program (Anchor): init_arena, submit_move_first, submit_move, stake. Agent (Node): instructions.js + run.js builds and signs tx, submits to devnet. App: GET /api/arena. Tests and CI in repo. Repo: https://github.com/grump-fun/agent-arb",
+  "tags": ["ai", "consumer", "progress-update"]
+}

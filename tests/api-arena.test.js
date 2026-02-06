@@ -4,7 +4,7 @@
  */
 
 async function test() {
-  const base = process.env.APP_URL || "http://localhost:3000";
+  const base = process.env.APP_URL || "http://127.0.0.1:3000";
   const res = await fetch(`${base}/api/arena`);
   const data = await res.json();
   if (!res.ok) throw new Error(`HTTP ${res.status}`);

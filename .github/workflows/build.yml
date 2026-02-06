@@ -41,8 +41,7 @@ jobs:
       - name: Install app deps
         run: cd app && npm install
 
-      - name: Start app (smoke)
-        run: |
-          cd app && timeout 5 npm start || true
+      - name: Run API test (starts app, hits /api/arena, exits)
+        run: node tests/run-api-test-with-server.js
         env:
           PORT: 3000

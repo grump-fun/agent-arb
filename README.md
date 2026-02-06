@@ -22,7 +22,7 @@ agent-arb/
 ├── README.md
 ├── Anchor.toml
 ├── programs/agent_arena/  # Anchor program (arena, submit_move, stake)
-├── agent/                 # Off-chain agent: run.js, heartbeat.js, status.js
+├── agent/                 # Off-chain agent: run.js, instructions.js, heartbeat.js, faucet.js
 ├── app/                   # Express API + minimal HTML (GET /api/arena, GET /)
 ├── scripts/               # create-colosseum-project.ps1
 └── .colosseum-api-key     # (gitignored) Colosseum API key
@@ -32,10 +32,11 @@ agent-arb/
 
 - **App (observe arena):** `cd app && npm install && npm start` → http://localhost:3000
 - **Agent (fetch state, decide move, sign & submit):** `cd agent && npm install && node run.js`  
-  Requires `.agent-keypair.json` (arena authority keypair) at repo root or `AGENT_KEYPAIR_PATH`. Get devnet SOL via [AgentWallet faucet](https://agentwallet.mcpay.tech/skill.md).
+  Requires `.agent-keypair.json` (arena authority keypair) at repo root or `AGENT_KEYPAIR_PATH`.
+- **Faucet (devnet SOL via AgentWallet):** `node agent/faucet.js` — set `AGENTWALLET_USERNAME` and `AGENTWALLET_API_TOKEN` (or `~/.agentwallet/config.json`).
 - **Heartbeat (Colosseum sync):** `cd agent && node heartbeat.js`
 - **Status:** `cd agent && node status.js`
-- **Tests:** `node agent/instructions.test.js`; `node tests/api-arena.test.js` (with app running)
+- **Tests:** `npm run test` (agent unit); `npm run test:api` (app on PORT 3000); `npm run test:api:full` (starts app, runs test, exits)
 
 ## Deploy app
 

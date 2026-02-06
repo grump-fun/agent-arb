@@ -1,0 +1,16 @@
+{
+  "name": "agent-arena",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous on-chain duels: agent signs moves, humans vote and stake.",
+  "scripts": {
+    "test": "node agent/instructions.test.js",
+    "test:agent": "cd agent && node instructions.test.js",
+    "test:api": "node tests/api-arena.test.js",
+    "test:api:full": "node tests/run-api-test-with-server.js",
+    "start:app": "cd app && npm start",
+    "start:agent": "cd agent && node run.js",
+    "heartbeat": "cd agent && node heartbeat.js"
+  }
+}

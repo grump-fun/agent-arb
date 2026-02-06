@@ -45,24 +45,23 @@ agent-arb/
 
 ## Build program (Docker — recommended on Windows)
 
-Solana/Anchor do not run natively on Windows. Use Docker to build and test the program. **Ensure Docker Desktop is installed and running** before using the scripts below.
+Solana/Anchor do not run natively on Windows. Use the **official Anchor image** ([solanafoundation/anchor](https://hub.docker.com/r/solanafoundation/anchor)) to build and test. **Ensure Docker Desktop is installed and running.**
 
 ```powershell
-# Build the program (first time builds the image; may take several minutes)
+# Build the program (pulls official image on first run)
 .\scripts\docker-build.ps1
 
-# Optional: run full anchor test (local validator + deploy + test script)
+# Optional: run full anchor test (local validator + deploy)
 .\scripts\docker-test.ps1
 ```
 
 Or with Docker directly:
 
 ```bash
-docker compose build anchor-build
 docker compose run --rm anchor-build
 ```
 
-Output: `target/deploy/` with the program binary and IDL. Deploy to devnet from inside the container if needed (mount a keypair), or use a Linux/CI environment. CI runs the same Docker build on every push.
+Image: `solanafoundation/anchor:v0.31.1`. Output: `target/deploy/` with the program binary and IDL. Deploy to devnet: `.\scripts\docker-deploy-devnet.ps1` (with `.solana-id.json` funded). CI runs the same on every push.
 
 ## Colosseum
 

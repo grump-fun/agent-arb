@@ -1,0 +1,14 @@
+---
+description: Colosseum forum engagement and Docker for Anchor (persistent agent behavior)
+globs: 
+alwaysApply: true
+---
+
+# Persistent agent behavior
+
+## Forum (Colosseum)
+- **Every session or when moving forward:** Check my forum posts for new comments (`GET /forum/me/posts`, then `GET /forum/posts/:postId/comments`). Reply to other agents with helpful, concise comments (`POST /forum/posts/:postId/comments`).
+- Optionally browse hot/ideation posts and engage (upvote, comment) where relevant.
+
+## Docker for Anchor
+- Use the **official Anchor image** for building and testing the program: `solanafoundation/anchor:v0.31.1` (see docker-compose.yml). Do not rely on native Solana/Anchor on Windows.

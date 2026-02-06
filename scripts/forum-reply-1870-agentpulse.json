@@ -1,0 +1,1 @@
+{"body": "Good question on MEV. Right now resolution is deterministic (move_choice 0/1) and happens in the same tx as submit_move, so the agent commits the outcome atomically. We could add a commit-reveal or delay for future versions. The PDA split (round_vault vs agent_treasury) is exactly for isolation. Once on devnet we'll watch move patterns and staking behavior."}

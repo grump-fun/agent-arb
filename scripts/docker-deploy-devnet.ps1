@@ -15,7 +15,7 @@ if (-not (Test-Path $keypairPath)) {
 }
 
 Set-Location $root
-# Docker Desktop on Windows: use the keypair path as mount source (e.g. C:\Users\...\agent-arb\.solana-id.json)
+# Official image uses /workdir; mount keypair for deploy
 $keypairAbs = (Resolve-Path $keypairPath).Path.Replace("\", "/")
 docker compose run --rm -v "${keypairAbs}:/root/.config/solana/id.json:ro" anchor-build anchor deploy --provider.cluster devnet
 exit $LASTEXITCODE

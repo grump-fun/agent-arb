@@ -1,5 +1,6 @@
-# Build Agent Arena Anchor program on Linux (use on Windows host via Docker).
-# Solana/Anchor do not run natively on Windows; this image provides the toolchain.
+# Optional: custom Anchor build (toolchain only). Prefer the official image:
+#   docker compose run --rm anchor-build   (uses solanafoundation/anchor:v0.31.1)
+# Use this Dockerfile only if you need a different Anchor/Solana version.
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive

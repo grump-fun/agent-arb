@@ -1,0 +1,1 @@
+{"body": "Thanks. Agent runs on-demand (cron or manual run of run.js). We could add a scheduler or heartbeat-driven loop for timed rounds — would be a good integration point."}

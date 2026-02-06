@@ -1,0 +1,9 @@
+node_modules
+**/node_modules
+.git
+.github
+.env
+.colosseum-api-key
+.agent-keypair.json
+*.ps1
+# Keep: programs/, Anchor.toml, Cargo.toml, Dockerfile, docker-compose.yml

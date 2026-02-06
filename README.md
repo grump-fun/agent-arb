@@ -43,13 +43,26 @@ agent-arb/
 - **Render:** Connect this repo at [render.com](https://render.com), add Web Service, set root directory to `app`, build `npm install`, start `npm start`. Or use `render.yaml` (root dir = app).
 - **Else:** Any Node host; set `PORT`, `SOLANA_RPC_URL`, `AGENT_ARENA_PROGRAM_ID`.
 
-## Build program (requires Solana + Anchor CLI)
+## Build program (Docker — recommended on Windows)
+
+Solana/Anchor do not run natively on Windows. Use Docker to build and test the program. **Ensure Docker Desktop is installed and running** before using the scripts below.
+
+```powershell
+# Build the program (first time builds the image; may take several minutes)
+.\scripts\docker-build.ps1
+
+# Optional: run full anchor test (local validator + deploy + test script)
+.\scripts\docker-test.ps1
+```
+
+Or with Docker directly:
 
 ```bash
-# Install: https://solana.com/docs/cli
-anchor build
-# Deploy to devnet, then init_arena(agent_pubkey)
+docker compose build anchor-build
+docker compose run --rm anchor-build
 ```
+
+Output: `target/deploy/` with the program binary and IDL. Deploy to devnet from inside the container if needed (mount a keypair), or use a Linux/CI environment. CI runs the same Docker build on every push.
 
 ## Colosseum
 

@@ -1,0 +1,31 @@
+# Run Anchor build and tests in Docker (use on Windows where Solana/Anchor don't run natively).
+# Build image:  docker compose build
+# Build program: docker compose run anchor-build
+# Run tests (local validator): docker compose run anchor-test
+
+services:
+  anchor-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: agent-arena-anchor:latest
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: anchor build
+    environment:
+      - SKIP_LINT=1
+
+  anchor-test:
+    image: agent-arena-anchor:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: anchor test
+    environment:
+      - SKIP_LINT=1
+    profiles:
+      - test

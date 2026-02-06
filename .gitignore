@@ -9,6 +9,7 @@ __pycache__/
 .env.local
 .colosseum-api-key
 .agent-keypair.json
+.solana-id.json
 *.pem
 target/
 

@@ -7,6 +7,18 @@ on:
     branches: [master, main]
 
 jobs:
+  program:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Anchor program (Docker)
+        run: |
+          docker compose build anchor-build
+          docker compose run --rm anchor-build
+        env:
+          SKIP_LINT: "1"
+
   agent:
     runs-on: ubuntu-latest
     steps:

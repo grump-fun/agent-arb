@@ -9,8 +9,6 @@ services:
     buildCommand: npm install
     startCommand: npm start
     envVars:
-      - key: PORT
-        generateValue: true
       - key: SOLANA_RPC_URL
         value: https://api.devnet.solana.com
       - key: NODE_ENV

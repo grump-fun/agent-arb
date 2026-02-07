@@ -2,6 +2,11 @@
 
 Keypairs were created by the agent. **Funding is required once** via AgentWallet (per Colosseum skill).
 
+## How this follows the skills
+
+- **Colosseum:** “Use AgentWallet for Solana keys/signing/funding — do not use solana-keygen or faucet airdrops.” We use **AgentWallet for all funding**: faucet sends SOL to your AgentWallet; `fund-deploy-keypair.js` uses AgentWallet **transfer-solana** to send SOL to the deploy keypair. No public airdrops.
+- **AgentWallet:** “Custom program tx signing: use local keypair in this agent; AgentWallet does not expose raw Solana tx signing.” So the **wallet that signs** deploy and `submit_move` must be a local keypair (we have no API to ask AgentWallet to sign our program’s instructions). We create those keypairs locally and **fund them from AgentWallet** only. The “wallet” for funding is AgentWallet; the keys that sign our program’s txs are local, as the skill allows.
+
 ## Keypair addresses (local only; gitignored)
 
 | Keypair | Purpose | Address |

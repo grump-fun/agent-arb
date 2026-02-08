@@ -52,7 +52,8 @@ app.use("/api", (_req, res, next) => {
   next();
 });
 
-app.use(express.static(join(__dirname, "public")));
+// UI lives in app/frontend/public (separate from backend). Local dev serves it here.
+app.use(express.static(join(__dirname, "frontend", "public")));
 
 app.get("/api/arena", async (_req, res) => {
   try {

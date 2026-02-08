@@ -22,9 +22,17 @@ Keypairs were created by the agent. **Funding is required once** via AgentWallet
 
 **Or** send devnet SOL to `BDwABxmu9Mtu3qSCUZWmaJfon6DwA6AKiFdntA5o9qF5` by any means (e.g. another wallet), then skip AgentWallet steps.
 
-## After funding: deploy program + init + run agent
+## After funding: sync keys, deploy program, init + run agent
 
-From repo root (Docker Desktop running):
+If the program has **not** been deployed to devnet yet, or keys are out of sync (Anchor.toml / lib.rs still have placeholder program ID), run **keys sync** then deploy:
+
+```powershell
+.\scripts\docker-sync-keys-deploy-devnet.ps1
+```
+
+That script (in Docker): (1) `anchor keys list` (ensure program keypair exists), (2) `anchor keys sync --provider.cluster devnet` (writes program ID from `target/deploy/agent_arena-keypair.json` into Anchor.toml and `programs/agent_arena/src/lib.rs`), (3) `anchor build`, (4) `anchor deploy --provider.cluster devnet` (payer = `.solana-id.json`). Then run init_arena and the agent.
+
+Or if keys are already synced and you only need to deploy:
 
 ```powershell
 .\scripts\deploy-devnet-then-run.ps1

@@ -5,7 +5,7 @@
 # Usage: .\scripts\docker-deploy-devnet.ps1
 
 $ErrorActionPreference = "Stop"
-$root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$root = Split-Path -Parent $PSScriptRoot
 if (-not (Test-Path $root)) { $root = (Get-Location).Path }
 
 $keypairPath = if ($env:SOLANA_KEYPAIR_PATH) { $env:SOLANA_KEYPAIR_PATH } else { Join-Path $root ".solana-id.json" }
@@ -15,7 +15,8 @@ if (-not (Test-Path $keypairPath)) {
 }
 
 Set-Location $root
+$composePath = Join-Path $root "docker-compose.yml"
 # Official image uses /workdir; mount keypair for deploy
 $keypairAbs = (Resolve-Path $keypairPath).Path.Replace("\", "/")
-docker compose run --rm -v "${keypairAbs}:/root/.config/solana/id.json:ro" anchor-build anchor deploy --provider.cluster devnet
+docker compose -f $composePath run --rm -v "${keypairAbs}:/root/.config/solana/id.json:ro" anchor-build anchor deploy --provider.cluster devnet
 exit $LASTEXITCODE

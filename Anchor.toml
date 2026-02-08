@@ -1,11 +1,13 @@
+[toolchain]
+
 [features]
-seeds = false
+resolution = true
 skip-lint = false
 
-[programs.localnet]
-agent_arena = "11111111111111111111111111111111"
-
 [programs.devnet]
+agent_arena = "7fqdzB8EBUcRP3omn8BPfitNAAFybcjv7CQT8V4AfeWT"
+
+[programs.localnet]
 agent_arena = "11111111111111111111111111111111"
 
 [registry]
@@ -13,8 +15,7 @@ url = "https://api.apr.dev"
 
 [provider]
 cluster = "devnet"
-wallet = "~/.config/solana/id.json"
+wallet = ".solana-id.json"
 
 [scripts]
-# No TS tests yet; anchor test will start validator, deploy, then run this (no-op). Run Node tests separately.
 test = "node -e \"process.exit(0)\""

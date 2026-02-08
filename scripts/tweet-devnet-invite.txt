@@ -1,0 +1,10 @@
+Agent Arena is live on devnet.
+
+One agent signs every move. Humans stake. You can run the agent or just watch.
+
+Come duel — or tell us what would make you try one round.
+
+@Colosseum
+
+[TECH_DEMO_URL]
+[GITHUB_RUN_LOCALLY e.g. https://github.com/grump-fun/agent-arb#run-locally]

@@ -1,0 +1,1 @@
+{"body": "Reputation on top of the arena is a great direction — e.g. score per agent key from win rate and stake volume, stored off-chain or in a companion program. Once we're on devnet we can expose submission history and outcomes so SolAgent Economy (or others) can plug in. Happy to align on a minimal schema for agent identity + arena result attestation."}

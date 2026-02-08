@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_lang::system_program::{create_account, CreateAccount};
+use anchor_lang::system_program::{create_account, transfer, CreateAccount, Transfer};
 
-declare_id!("11111111111111111111111111111111");
+declare_id!("7fqdzB8EBUcRP3omn8BPfitNAAFybcjv7CQT8V4AfeWT");
 
 #[program]
 pub mod agent_arena {
@@ -20,19 +20,19 @@ pub mod agent_arena {
         let rent = Rent::get()?;
         let lamports = rent.minimum_balance(0);
         let bump = ctx.bumps.agent_treasury;
-        let seeds = &[b"agent_treasury", &[bump]];
+        let seeds: &[&[u8]] = &[b"agent_treasury", &[bump]];
         create_account(
             CpiContext::new_with_signer(
                 ctx.accounts.system_program.to_account_info(),
                 CreateAccount {
                     from: ctx.accounts.payer.to_account_info(),
                     to: ctx.accounts.agent_treasury.to_account_info(),
-                    lamports,
-                    space: 0,
-                    owner: ctx.program_id,
                 },
-                &[&seeds[..]],
+                &[seeds],
             ),
+            lamports,
+            0,
+            &ctx.program_id,
         )?;
         Ok(())
     }
@@ -65,14 +65,16 @@ pub mod agent_arena {
             }
             let vault_info = ctx.accounts.round_vault.to_account_info();
             let treasury_info = ctx.accounts.agent_treasury.to_account_info();
-            let program_id = ctx.program_id;
-            let bump = ctx.bumps.round_vault;
-            let seeds = &[
+            let (_, bump) = Pubkey::find_program_address(
+                &[b"round_vault", &prev_round.to_le_bytes()[..]],
+                ctx.program_id,
+            );
+            let seeds: &[&[u8]] = &[
                 b"round_vault",
                 &prev_round.to_le_bytes()[..],
                 &[bump],
             ];
-            let signer_seeds = &[&seeds[..]];
+            let signer_seeds: &[&[&[u8]]] = &[seeds];
             let cpi_ctx = CpiContext::new_with_signer(
                 ctx.accounts.system_program.to_account_info(),
                 Transfer {
@@ -100,25 +102,28 @@ pub mod agent_arena {
         if vault_info.lamports() == 0 {
             let rent = Rent::get()?;
             let lamports = rent.minimum_balance(0);
-            let bump = ctx.bumps.round_vault;
-            let seeds = &[
+            let (_, bump) = Pubkey::find_program_address(
+                &[b"round_vault", &round.to_le_bytes()[..]],
+                ctx.program_id,
+            );
+            let seeds: &[&[u8]] = &[
                 b"round_vault",
                 &round.to_le_bytes()[..],
                 &[bump],
             ];
-            let signer_seeds = &[&seeds[..]];
+            let signer_seeds: &[&[&[u8]]] = &[seeds];
             create_account(
                 CpiContext::new_with_signer(
                     ctx.accounts.system_program.to_account_info(),
                     CreateAccount {
                         from: ctx.accounts.staker.to_account_info(),
                         to: vault_info,
-                        lamports,
-                        space: 0,
-                        owner: ctx.program_id,
                     },
                     signer_seeds,
                 ),
+                lamports,
+                0,
+                &ctx.program_id,
             )?;
         }
 
@@ -139,8 +144,6 @@ pub mod agent_arena {
         Ok(())
     }
 }
-
-use anchor_lang::system_program::Transfer;
 
 #[derive(Accounts)]
 pub struct InitArena<'info> {
@@ -226,14 +229,14 @@ pub struct Stake<'info> {
         init_if_needed,
         payer = staker,
         space = 8 + 8 + 8 + 1,
-        seeds = [b"round", &round.to_le_bytes()],
+        seeds = [b"round", round.to_le_bytes().as_ref()],
         bump
     )]
     pub round_state: Account<'info, RoundState>,
 
     #[account(
         mut,
-        seeds = [b"round_vault", &round.to_le_bytes()],
+        seeds = [b"round_vault", round.to_le_bytes().as_ref()],
         bump,
     )]
     pub round_vault: SystemAccount<'info>,

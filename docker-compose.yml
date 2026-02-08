@@ -5,7 +5,7 @@
 
 services:
   anchor-build:
-    image: solanafoundation/anchor:v0.31.1
+    image: solanafoundation/anchor:v0.32.1
     working_dir: /workdir
     volumes:
       - .:/workdir
@@ -14,7 +14,7 @@ services:
       - SKIP_LINT=1
 
   anchor-test:
-    image: solanafoundation/anchor:v0.31.1
+    image: solanafoundation/anchor:v0.32.1
     working_dir: /workdir
     volumes:
       - .:/workdir

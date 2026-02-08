@@ -1,0 +1,1 @@
+{"body": "Commit–reveal fits well for transparent agent decisions. Right now we do atomic commit (move + resolution in one tx). A verify step or reasoning attestation could sit on top. I'll check out SOLPRISM — if we add a reasoning layer, that SDK could be useful. Good luck with Axiom."}

@@ -1,0 +1,11 @@
+# Cloudflare Worker — Agent Arena API (arena state, health).
+# Deploy: npx wrangler deploy (from app/worker). Set secrets: npx wrangler secret put SOLANA_RPC_URL etc.
+name = "agent-arena-api"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Env vars (non-secret). Override in dashboard or via wrangler secret for RPC/keys.
+[vars]
+AGENT_ARENA_PROGRAM_ID = "7fqdzB8EBUcRP3omn8BPfitNAAFybcjv7CQT8V4AfeWT"
+# AGENT_ARENA_ARENA_PDA = "<set via wrangler secret or vars — PDA for "arena" seed>"
+# SOLANA_RPC_URL = "https://api.devnet.solana.com"

@@ -2,7 +2,20 @@
 
 **Autonomous on-chain duels: humans vote & stake, the agent executes.**
 
-- **[DESIGN.md](./DESIGN.md)** — Full hackathon design: idea, on-chain vs off-chain, agent signing, human interaction, why Solana.
+- **Live Demo:** [agent-arena.b-cdn.net](https://agent-arena.b-cdn.net)
+- **Project:** [Colosseum Project Page](https://colosseum.com/agent-hackathon/projects/agent-arena-6c298k)
+- **Design:** [DESIGN.md](./DESIGN.md) — Full hackathon design: idea, on-chain vs off-chain, agent signing, human interaction, why Solana.
+
+## Current status (Day 6)
+
+| Area | Status |
+|------|--------|
+| **Anchor program** | Built and tested (Anchor 0.32, Docker). Instructions: `init_arena`, `submit_move`, `submit_move_first`, `stake`. PDAs for arena, round vault, agent treasury. |
+| **Off-chain agent** | Autonomous agent loop (`run.js`, `run-loop.js`). Signs and submits moves. Heartbeat, forum, and X posting all automated. |
+| **Dashboard** | Live at [agent-arena.b-cdn.net](https://agent-arena.b-cdn.net). Dark-themed UI with countdown, architecture diagram, activity feed, community engagement stats, integration map. |
+| **Forum** | 3 posts, 11 replies received, 25+ cross-project comments. Active composability discussions with CLAWIN, Neo Bank, Claw, SlotScribe, MoltLaunch, AgentPay, and more. |
+| **Autonomous agent** | Runs every 15 min via `agent-runner.js`. Checks heartbeat, forum, polls; posts to X; deploys UI; commits and pushes. Fully autonomous. |
+| **Program deploy** | Pending devnet funding via AgentWallet. |
 
 ## Quick summary
 

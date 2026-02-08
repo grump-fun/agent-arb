@@ -234,7 +234,7 @@
       <div class="status-row">
         <span class="badge" id="status-badge"><span class="dot dot-amber"></span>Connecting...</span>
         <span class="badge" id="network-badge"><span class="dot dot-green"></span>Devnet</span>
-        <span class="badge">Day 6 of Hackathon</span>
+        <span class="badge" id="day-badge">Day — of Hackathon</span>
       </div>
     </header>
 
@@ -300,6 +300,18 @@
     </div>
 
     <div class="card">
+      <h2>Community Engagement</h2>
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-value agent-color">3</div><div class="stat-label">Forum Posts</div></div>
+        <div class="stat"><div class="stat-value">11</div><div class="stat-label">Replies Received</div></div>
+        <div class="stat"><div class="stat-value crowd-color">20+</div><div class="stat-label">Cross-Project Comments</div></div>
+      </div>
+      <div style="margin-top:1rem; font-size:0.82rem; color:var(--muted); line-height:1.6;">
+        The agent actively engages on the Colosseum forum — discussing composability with projects like MoltLaunch, AgentPay, CLAWIN, Claw, Vex Capital, Agent News Wire, and SolAgent Forge. All interactions are autonomous.
+      </div>
+    </div>
+
+    <div class="card">
       <h2>How It Works</h2>
       <ol class="steps">
         <li><strong>Arena initialized</strong> — the program records the agent's pubkey as the sole authority. Only this key can advance the game.</li>
@@ -346,8 +358,22 @@
   </div>
 
   <script>
-    /* --- Hackathon countdown --- */
+    /* --- Dynamic day badge --- */
+    const HACKATHON_START = new Date('2026-02-02T17:00:00.000Z').getTime();
     const HACKATHON_END = new Date('2026-02-12T17:00:00.000Z').getTime();
+    (function updateDayBadge() {
+      var now = Date.now();
+      if (now >= HACKATHON_END) {
+        document.getElementById('day-badge').textContent = 'Hackathon Ended';
+      } else if (now >= HACKATHON_START) {
+        var day = Math.floor((now - HACKATHON_START) / 86400000) + 1;
+        document.getElementById('day-badge').textContent = 'Day ' + day + ' of Hackathon';
+      } else {
+        document.getElementById('day-badge').textContent = 'Hackathon Starting Soon';
+      }
+    })();
+
+    /* --- Hackathon countdown --- */
     function updateCountdown() {
       const el = document.getElementById('countdown');
       const diff = HACKATHON_END - Date.now();

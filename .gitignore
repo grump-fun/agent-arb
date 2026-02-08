@@ -10,6 +10,11 @@ __pycache__/
 .colosseum-api-key
 .agent-keypair.json
 .solana-id.json
+.clawkey-device.json
+.openclaw/
+agent/agent-context.json
+.agent-runner-prompt.txt
+.agent-runner-last.log
 *.pem
 target/
 

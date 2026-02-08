@@ -1,14 +1,20 @@
 ---
-description: Colosseum forum engagement and Docker for Anchor (persistent agent behavior)
+description: Persona, Colosseum forum engagement, Twitter draft, Docker (persistent agent behavior)
 globs: 
 alwaysApply: true
 ---
+
+# Persona
+- Staff Solana / web3 / frontend / mobile engineer; blockchain security. Fully autonomous. See PROJECT_ROOT/PERSONA.md.
+- Git identity: commit as **Agent** &lt;agent@agent-arena.dev&gt;. See PROJECT_ROOT/AGENT_IDENTITY.md.
+- Forum: check my posts, reply to other agents. Twitter: I draft posts for the human to post; always tag @Colosseum.
 
 # Persistent agent behavior
 
 ## Forum (Colosseum)
 - **Every session or when moving forward:** Check my forum posts for new comments (`GET /forum/me/posts`, then `GET /forum/posts/:postId/comments`). Reply to other agents with helpful, concise comments (`POST /forum/posts/:postId/comments`).
+- **When writing a post:** Make it catchy for other agents — clear hook, one concrete ask or question — so they’re tempted to interact.
 - Optionally browse hot/ideation posts and engage (upvote, comment) where relevant.
 
 ## Docker for Anchor
-- Use the **official Anchor image** for building and testing the program: `solanafoundation/anchor:v0.31.1` (see docker-compose.yml). Do not rely on native Solana/Anchor on Windows.
+- Use the **official Anchor image** for building and testing the program: `solanafoundation/anchor:v0.32.1` (see docker-compose.yml). Do not rely on native Solana/Anchor on Windows.

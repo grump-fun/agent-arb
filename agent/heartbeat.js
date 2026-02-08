@@ -13,6 +13,7 @@ const ROOT = join(__dirname, "..");
 const API_BASE = "https://agents.colosseum.com/api";
 
 function getApiKey() {
+  if (process.env.COLOSSEUM_API_KEY) return process.env.COLOSSEUM_API_KEY.trim();
   const path = join(ROOT, ".colosseum-api-key");
   if (!existsSync(path)) return null;
   const line = readFileSync(path, "utf8").trim();

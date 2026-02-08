@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "run": "node run.js",
+    "run:loop": "node run-loop.js",
     "heartbeat": "node heartbeat.js",
-    "status": "node status.js"
+    "status": "node status.js",
+    "test": "node instructions.test.js"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.30.1",

@@ -33,10 +33,27 @@ agent-arb/
 - **App (observe arena):** `cd app && npm install && npm start` → http://localhost:3000
 - **Agent (fetch state, decide move, sign & submit):** `cd agent && npm install && node run.js`  
   Requires `.agent-keypair.json` (arena authority keypair) at repo root or `AGENT_KEYPAIR_PATH`.
+- **Perpetual agent (run forever):** see [Perpetual run](#perpetual-run--24-7-agent) below.
+- **Autonomous agent (Cursor CLI every 30 min):** context-aware loop that runs Cursor CLI (heartbeat, forum, post to X via x-autopilot webhook). See **[AUTONOMOUS_AGENT.md](./AUTONOMOUS_AGENT.md)**. Run: `node scripts/agent-runner.js`.
 - **Faucet (devnet SOL to AgentWallet):** `node agent/faucet.js`. **Fund deploy keypair from AgentWallet:** `node agent/fund-deploy-keypair.js` (then run `.\scripts\docker-deploy-devnet.ps1`). Set `AGENTWALLET_USERNAME` and `AGENTWALLET_API_TOKEN` (or `~/.agentwallet/config.json`).
-- **Heartbeat (Colosseum sync):** `cd agent && node heartbeat.js`
+- **Heartbeat (Colosseum sync):** `cd agent && node heartbeat.js`. To run **every 30 min**: use `node heartbeat-loop.js` (keeps running) or rely on GitHub Actions (`.github/workflows/heartbeat.yml`, runs on schedule; add repo secret `COLOSSEUM_API_KEY` for status).
 - **Status:** `cd agent && node status.js`
+- **ClawKey (verify human ownership):** `cd agent && node clawkey-register.js` — prints a registration URL; **you** open it and complete VeryAI palm verification (do not automate opening the browser). See https://clawkey.ai/skill.md.
 - **Tests:** `npm run test` (agent unit); `npm run test:api` (app on PORT 3000); `npm run test:api:full` (starts app, runs test, exits)
+
+## Perpetual run (24-7 agent)
+
+To keep the **game agent** running so it periodically submits moves:
+
+| Method | How | Best for |
+|--------|-----|----------|
+| **Loop script** | `cd agent && node run-loop.js` — runs `run.js` once, then every 2 min (set `RUN_INTERVAL_SEC` to change). Leave the terminal open or run under PM2. | Local PC or VPS |
+| **PM2** | `pm2 start agent/run-loop.js --name agent-arena --cwd agent` — survives logout; use `pm2 logs`, `pm2 restart agent-arena`. | VPS / server |
+| **Windows Task Scheduler** | Create a task that runs every 2–5 min: `node C:\path\to\agent\run.js` (one shot per trigger). | Windows, no loop process |
+| **Cron (Linux/Mac)** | `*/2 * * * * cd /path/to/agent-arb/agent && node run.js` (every 2 min). | Linux/Mac server |
+| **Render cron** | Add a [Render Cron Job](https://render.com/docs/cronjobs): build `npm install`, start `node run.js`, schedule `*/2 * * * *`. Root dir `agent`. You must put the keypair in an env var (e.g. base64 of the JSON) and have the start command decode it to a file. | Cloud, no VPS |
+
+**Requirements for perpetual run:** Program deployed and arena initialized; `.agent-keypair.json` (arena authority) present; `AGENT_ARENA_PROGRAM_ID` and `SOLANA_RPC_URL` set if needed.
 
 ## Deploy app
 

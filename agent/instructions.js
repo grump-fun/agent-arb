@@ -54,6 +54,30 @@ export function agentTreasuryPda(programId = PROGRAM_ID) {
 }
 
 /**
+ * Build instruction data: init_arena(agent_authority: Pubkey)
+ */
+export function initArenaData(agentAuthorityPubkey) {
+  const pubkey = typeof agentAuthorityPubkey === "string"
+    ? new PublicKey(agentAuthorityPubkey)
+    : agentAuthorityPubkey;
+  return Buffer.concat([discriminator("init_arena"), pubkey.toBuffer()]);
+}
+
+/**
+ * Accounts for init_arena: arena (init), agent_treasury (mut), payer (signer), system_program.
+ */
+export function initArenaAccounts(programId = PROGRAM_ID, payerPubkey) {
+  const systemProgramId = new PublicKey("11111111111111111111111111111111");
+  const payer = typeof payerPubkey === "string" ? new PublicKey(payerPubkey) : payerPubkey;
+  return [
+    { pubkey: arenaPda(programId), isSigner: false, isWritable: true },
+    { pubkey: agentTreasuryPda(programId), isSigner: false, isWritable: true },
+    { pubkey: payer, isSigner: true, isWritable: true },
+    { pubkey: systemProgramId, isSigner: false, isWritable: false },
+  ];
+}
+
+/**
  * Build instruction data: submit_move_first(_move_choice: u8)
  */
 export function submitMoveFirstData(moveChoice = 0) {

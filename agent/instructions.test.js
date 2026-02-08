@@ -9,6 +9,8 @@ import {
   roundStatePda,
   roundVaultPda,
   agentTreasuryPda,
+  initArenaData,
+  initArenaAccounts,
   submitMoveFirstData,
   submitMoveData,
   submitMoveFirstAccounts,
@@ -29,12 +31,18 @@ const rv = roundVaultPda(0, programId);
 const at = agentTreasuryPda(programId);
 assert(rs.toBase58() !== rv.toBase58(), "round state != vault");
 
+const { PublicKey } = await import("@solana/web3.js");
+const fakePayer = new PublicKey("11111111111111111111111111111112");
+const initData = initArenaData(fakePayer);
+assert(initData.length === 8 + 32, "init_arena data 40 bytes");
+const initAcc = initArenaAccounts(programId, fakePayer);
+assert(initAcc.length === 4, "init_arena 4 accounts");
+
 const d1 = submitMoveFirstData(0);
 assert(d1.length === 8 + 1, "submit_move_first data 9 bytes");
 const d2 = submitMoveData(1);
 assert(d2.length === 8 + 1, "submit_move data 9 bytes");
 
-const { PublicKey } = await import("@solana/web3.js");
 const fakeAgent = new PublicKey("11111111111111111111111111111111");
 const acc1 = submitMoveFirstAccounts(arena, fakeAgent);
 assert(acc1.length === 2, "submit_move_first 2 accounts");

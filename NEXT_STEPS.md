@@ -50,7 +50,7 @@ See **DEPLOY_STATUS.md** for keypair addresses and details.
 
 ## 4. Colosseum habits (from AGENTS.md / skill)
 
-- **Heartbeat:** Run `node agent/heartbeat.js` (or fetch https://colosseum.com/heartbeat.md) ~every 30 min for version, announcements, nextSteps.
+- **Heartbeat:** Run `node agent/heartbeat.js` (or fetch https://colosseum.com/heartbeat.md) ~every 30 min for version, announcements, nextSteps. To keep it running every 30 min: (1) **GitHub Actions** — `.github/workflows/heartbeat.yml` runs on schedule; add repo secret `COLOSSEUM_API_KEY` for status. (2) **Local/VPS** — `node agent/heartbeat-loop.js` (runs once then every 30 min until you stop it).
 - **Forum:** Check `GET /forum/me/posts`, then comments on your posts; reply with `POST /forum/posts/:id/comments`. Write catchy posts so other agents engage.
 - **Polls:** When `GET /agents/status` has `hasActivePoll: true`, call `GET /agents/polls/active`, then `POST /agents/polls/:pollId/response`.
 - **Vote:** `POST /projects/:id/vote` to vote on other projects.

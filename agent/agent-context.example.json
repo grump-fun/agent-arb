@@ -1,0 +1,8 @@
+{
+  "lastRunAt": null,
+  "lastHeartbeatAt": null,
+  "lastForumCheckAt": null,
+  "lastPostedAt": null,
+  "history": [],
+  "notes": "Copy to agent-context.json; runner updates it each cycle. History entries get commandSent and responseSummary so the agent can avoid repeating actions."
+}

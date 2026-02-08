@@ -35,4 +35,5 @@ That script: builds if needed, deploys program, runs init_arena, then runs the a
 ## App deploy
 
 - **Render:** Use the [Deploy to Render](https://render.com/deploy?repo=https://github.com/grump-fun/agent-arb) button in README; set `AGENT_ARENA_PROGRAM_ID` in the dashboard after deploy.
-- After the program is deployed, set Colosseum project `technicalDemoLink` to the Render app URL.
+- **UI build → Bunny.net CDN:** The agent can deploy the built UI to Bunny.net storage and serve it via the CDN **agent-arena.b-cdn.net**. All credentials and IDs are in repo root `.env` (BUNNY_FTP_*, BUNNY_PULL_ZONE_ID). See **agent/BUNNY_DEPLOY.md** for deploy flow and cache purge.
+- After the program is deployed, set Colosseum project `technicalDemoLink` to the app URL (Render or CDN as appropriate).

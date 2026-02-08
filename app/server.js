@@ -1,7 +1,8 @@
 /**
- * Minimal API + static UI for Agent Arena.
- * GET /api/arena -> arena state (from RPC).
- * GET / -> simple HTML to observe and (placeholder) vote.
+ * Agent Arena — API + UI.
+ * GET /            -> static UI (public/index.html) — polished dashboard for arena observation.
+ * GET /api/arena   -> arena state (round, wins, authority) from on-chain RPC.
+ * GET /api/health  -> service health, network, program ID.
  */
 
 import express from "express";
@@ -41,6 +42,16 @@ async function fetchArena(connection, programId) {
 }
 
 app.use(express.json());
+
+// CORS for API routes — allow external integrations
+app.use("/api", (_req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (_req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+
 app.use(express.static(join(__dirname, "public")));
 
 app.get("/api/arena", async (_req, res) => {
@@ -49,48 +60,61 @@ app.get("/api/arena", async (_req, res) => {
     const arena = await fetchArena(connection, PROGRAM_ID);
     res.json(arena || { error: "Arena not initialized" });
   } catch (e) {
-    res.status(500).json({ error: String(e.message) });
+    res.status(500).json({ error: e?.message ?? String(e) });
   }
 });
 
-app.get("/", (_req, res) => {
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Agent Arena</title>
-  <style>
-    body { font-family: system-ui,sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
-    h1 { font-size: 1.5rem; }
-    .arena { background: #1a1a2e; color: #eee; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
-    .arena p { margin: 0.5rem 0; }
-    .refresh { margin-top: 1rem; }
-    button { padding: 0.5rem 1rem; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <h1>Agent Arena</h1>
-  <p>Humans vote and stake. The agent decides and executes.</p>
-  <div class="arena" id="arena">Loading…</div>
-  <div class="refresh"><button onclick="load()">Refresh</button></div>
-  <script>
-    async function load() {
-      const el = document.getElementById('arena');
-      el.textContent = 'Loading…';
-      const r = await fetch('/api/arena');
-      const d = await r.json();
-      if (d.error) { el.innerHTML = '<p>' + d.error + '</p>'; return; }
-      el.innerHTML = '<p><b>Round</b> ' + d.round + '</p>' +
-        '<p>Agent wins: ' + d.agentWins + ' | Crowd wins: ' + d.crowdWins + '</p>' +
-        '<p>Agent authority: <code>' + d.authority?.slice(0,8) + '…</code></p>';
-    }
-    load();
-  </script>
-</body>
-</html>
-  `;
-  res.send(html);
+app.get("/api/health", (_req, res) => {
+  res.json({
+    status: "ok",
+    service: "agent-arena",
+    network: RPC.includes("devnet") ? "devnet" : RPC.includes("mainnet") ? "mainnet" : "custom",
+    programId: PROGRAM_ID,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get("/api/activity", (_req, res) => {
+  try {
+    const ctxPath = join(__dirname, "..", "agent", "agent-context.json");
+    if (!existsSync(ctxPath)) return res.json({ history: [], lastRunAt: null });
+    const ctx = JSON.parse(readFileSync(ctxPath, "utf8"));
+    const history = (ctx.history || [])
+      .filter((h) => h.summary && h.summary !== "Cursor agent exited 1")
+      .slice(-8)
+      .reverse();
+    res.json({
+      lastRunAt: ctx.lastRunAt || null,
+      lastPostedAt: ctx.lastPostedAt || null,
+      history: history.map((h) => ({
+        at: h.at,
+        summary: h.summary.length > 200 ? h.summary.slice(0, 200) + "…" : h.summary,
+      })),
+    });
+  } catch (e) {
+    res.status(500).json({ error: e?.message ?? String(e) });
+  }
+});
+
+app.get("/api/project", (_req, res) => {
+  res.json({
+    name: "Agent Arena",
+    description: "Autonomous on-chain duels on Solana. The agent signs every move; humans observe and stake.",
+    hackathon: "Colosseum Agent Hackathon 2026",
+    projectUrl: "https://colosseum.com/agent-hackathon/projects/agent-arena-6c298k",
+    repo: "https://github.com/grump-fun/agent-arb",
+    twitter: "https://x.com/GrumpyOnChain",
+    stack: ["Anchor", "Solana", "Node.js", "Express"],
+    features: [
+      "Agent-signed moves (only registered agent pubkey can submit)",
+      "PDA vaults for per-round stake isolation",
+      "Agent treasury PDA for winnings accumulation",
+      "Atomic stake resolution in same tx as move",
+      "Real-time dashboard with auto-refresh"
+    ],
+    network: RPC.includes("devnet") ? "devnet" : RPC.includes("mainnet") ? "mainnet" : "custom",
+    programId: PROGRAM_ID,
+  });
 });
 
 const port = process.env.PORT || 3000;

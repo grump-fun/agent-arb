@@ -60,7 +60,18 @@ async function main() {
     console.error("polls/active", res.status, await res.text());
     process.exit(1);
   }
-  const data = await res.json();
+  const text = await res.text();
+  if (!text || !text.trim()) {
+    console.log("No active poll (empty response).");
+    return;
+  }
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    console.log("No active poll (invalid JSON).");
+    return;
+  }
   const poll = data.poll;
   if (!poll) {
     console.log("No active poll.");
